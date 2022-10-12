@@ -110,18 +110,6 @@
     color: var(--bg-color);
   }
 
-  button.profileButton {
-    position: absolute;
-    vertical-align: top;
-    right: 3px;
-    top: 3px;
-    font-size: 14px;
-  }
-
-  :not(.ulHover) > button.profileButton:not(:hover) {
-    display: none;
-  }
-
   #controlChat {
     background-color: var(--bg-color);
     border-top: 1px solid var(--theme-color);
@@ -350,6 +338,7 @@
       //userlist is how ever constant on grab only
       
       if($('div.msg.ulName.them.ulHover').length == 1){
+        $(".menu #private").show()
         //get the name of the profile for sending them to the right profile.
         getname = $('div.msg.ulName.them.ulHover').clone().children().remove().end().text();
         // grab the element data for proper profile sending. just grab their name and just the name.
@@ -359,7 +348,8 @@
         // get the first word of the text line since it always say their username
           // compare the click name and the temporary fighter name
           // goes to the buttom data,
-          if (tempname[0] == getname){
+           //If there is a alert from the Spefically from the fighters. it will start up a game.
+          if (tempname[0] == getname && $(index).children(".inline.popOut").length == 1){
             // import the fighter link into the menu fighter data. and show the fighter option
             link = $(index).children(".inline.popOut");
             let msgid  = $(index).parent().attr('id').slice(3);
@@ -394,11 +384,21 @@
     left: e.pageX+'px'
     }).show();
       }
-    
+      // when you want to view your own profile
+      if ($('div.msg.ulName.me').length == 1){
+        $(".menu #private").hide()
+        $(".menu #fighter").hide()
+        getname = $('div.msg.ulName.me').clone().children().remove().end().text();
+        $('.menu').css({
+          //goes to our cursor
+         top: e.pageY+'px',
+          left: e.pageX+'px'
+          }).show();
+      }
 return false ;
 });
 
- //it was going to add in a way to remove the join match buttom. can't figure out a way where they information save to.
+//delete the fighter message
  $(document).ready(function() {
    $(".msg.alert .content .inline.popOut").click( function(){
     //it will delete the fighter links. when the button is click.    
@@ -438,13 +438,9 @@ return false ;
       $(".menu #private").css({"background-color": "rgb(54, 51, 51)","color":"white"})
     })
 
-
-    
     $(".menu #fighter").mouseleave(function(){
       $(".menu #fighter").css({"background-color": "rgb(54, 51, 51)","color":"white"})
     })
-
-
 
     $(".menu #profile").mouseleave(function(){
       $(".menu #profile").css({"background-color": "rgb(54, 51, 51)","color":"white"})
@@ -556,29 +552,16 @@ return false ;
               newUser.classList.add('them')
               newUser.setAttribute("onclick", "changeRec('" + name + "', this)");
               newUser.title = "Send a private message";
-              let profileButton = document.createElement("button");
               let profile = document.getElementById("profile");
               let menu = document.getElementById("menu");
-              profileButton.innerText = "View profile";
-              profileButton.classList.add("profileButton");
-              //should stop the name variable from updating.
-              profileButton.onmouseover = event => event.stopPropagation();
               menu.onmouseover = event => event.stopPropagation();
               // share very familier code with the profilebutton only difference is the different id element and a different variable name.
               profile.onclick = event => {
+                console.log("test");
                 let advancedParam = urlParams.get("advanced") ? "&advanced=true" : "";
-                window.location = `/profile?user=${getname}${advancedParam}`;
+                window.open(`/profile?user=${getname}${advancedParam}`);
                 event.stopPropagation();
               };
-
-
-              profileButton.onclick = event => {
-                let advancedParam = urlParams.get("advanced") ? "&advanced=true" : "";
-                window.location = `/profile?user=${name}${advancedParam}`;
-                event.stopPropagation();
-              };
-              
-              newUser.appendChild(profileButton);
               newUser.onmouseover = function() {this.classList.add("ulHover");};
               newUser.onmouseout = function() {this.classList.remove("ulHover");};
             }
