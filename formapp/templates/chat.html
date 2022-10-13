@@ -334,8 +334,8 @@
     let link = "";
     //make the context menu show up in userlist only.
     $("#userlist").bind("contextmenu", function(e) {
-      //because ulHover constantly getting update one grab/check is not enough.
       //userlist is how ever constant on grab only
+      // userlist with the users are on the same level so it grabbing all of them. the ulhover seperate them
       
       if($('div.msg.ulName.them.ulHover').length == 1){
         $(".menu #private").show()
