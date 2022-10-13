@@ -385,10 +385,10 @@
     }).show();
       }
       // when you want to view your own profile
-      if ($('div.msg.ulName.me').length == 1){
+      if ($('div.msg.ulName.me.ulHover').length == 1){
         $(".menu #private").hide()
         $(".menu #fighter").hide()
-        getname = $('div.msg.ulName.me').clone().children().remove().end().text();
+        getname = $('div.msg.ulName.me.ulHover').clone().children().remove().end().text();
         $('.menu').css({
           //goes to our cursor
          top: e.pageY+'px',
@@ -416,9 +416,13 @@ return false ;
   $(".menu").bind('contextmenu click', function() {
     $(".menu").hide();
   });
-  $(window).bind('beforeunload', function(){
+  $(".menu").children().bind('contextmenu click', function() {
     $(".menu").hide();
   });
+  //Not needed since we are opening new tabs.
+  // $(window).bind('beforeunload', function(){
+  //   $(".menu").hide();
+  // });
 
   //when the mouse over the tabs of the menu. it will do a class thing like the orginal thing like mouse hover but jquery.
   //three function below happens when the mouse enter their box
@@ -562,9 +566,11 @@ return false ;
                 window.open(`/profile?user=${getname}${advancedParam}`);
                 event.stopPropagation();
               };
-              newUser.onmouseover = function() {this.classList.add("ulHover");};
-              newUser.onmouseout = function() {this.classList.remove("ulHover");};
+
             }
+            //have been move to affect our name as well. since the rightclick anywhere in the userlist affect the all the username except ulHover.
+            newUser.onmouseover = function() {this.classList.add("ulHover");};
+              newUser.onmouseout = function() {this.classList.remove("ulHover");};
         }
     });
 
@@ -604,6 +610,17 @@ return false ;
           //sendButton.value = "Send to " + receiver;
           //el.classList.add('whisper');
           document.getElementById("removeRec").style.display = "initial";
+          //look at each profile and see which one is in private. if they did this function right after. it should 
+          $("div.msg.ulName.them").each(function(element, index){
+              console.log($(index).clone().children().remove().end().text());
+              if (receiver == $(index).clone().children().remove().end().text()) {
+                console.log("yay");
+                $(index).css({"background-color": "#00e7ffc4"})
+              } else {
+                console.log("boo");
+                $(index).css({"background-color": ""})
+              }
+          })
     }
 
     function removeRec() {
@@ -613,7 +630,11 @@ return false ;
         boxes.sendButton.classList.remove("rec");
         //sendButton.value = "Send";
         //el.classList.remove('whisper');
+        // remove all the hihglight for private profile.
         document.getElementById("removeRec").style.display = "none";
+        $("div.msg.ulName.them").each(function(element, index){
+          $(index).css({"background-color": ""})
+        })
     }
 
     function atBottom(ele) {
