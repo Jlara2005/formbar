@@ -318,6 +318,7 @@
   <li id="private">Private chat</li>
   <li id="profile">Profile</li>
   <li id="fighter">Fighter</li>
+  <li id="ttt">start ttt </li>
 </div>
 {% endblock %}
 
@@ -339,6 +340,7 @@
       
       if($('div.msg.ulName.them.ulHover').length == 1){
         $(".menu #private").show()
+        $(".menu #ttt").show()
         //get the name of the profile for sending them to the right profile.
         getname = $('div.msg.ulName.them.ulHover').clone().children().remove().end().text();
         // grab the element data for proper profile sending. just grab their name and just the name.
@@ -355,7 +357,6 @@
             let msgid  = $(index).parent().attr('id').slice(3);
             //true link provide a function to join the game and to delete the message.
             let truelink = $(link).attr("onclick") + `; chatSocket.emit('delete', ${msgid}) ` 
-            console.log(truelink);
             $(".menu #fighter").show()
             // insert the onclick to the fighter tab
             $('.menu #fighter').attr('onclick', truelink );
@@ -372,12 +373,14 @@
 
 
 
-
-        let Profilename = $('div.msg.ulName.them.ulHover').attr("onclick")
         //grab the onlclick function from the private name feature.
-        console.log(Profilename);
+        let Profilename = $('div.msg.ulName.them.ulHover').attr("onclick")
+
+
         //import the onclick to private on the context menu
         $('.menu #private').attr('onclick', `${Profilename}`)
+        let tictac = `window.open('/games/ttt?opponent=${getname}&advanced=') `
+        $('.menu #ttt').attr('onclick',tictac )
         $('.menu').css({
           //goes to our cursor
     top: e.pageY+'px',
@@ -386,6 +389,7 @@
       }
       // when you want to view your own profile
       if ($('div.msg.ulName.me.ulHover').length == 1){
+        $(".menu #ttt").hide()
         $(".menu #private").hide()
         $(".menu #fighter").hide()
         getname = $('div.msg.ulName.me.ulHover').clone().children().remove().end().text();
