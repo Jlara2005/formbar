@@ -23,6 +23,7 @@
 </form>
 <script type="text/javascript">
     var quiz = JSON.parse('{{ quiz | tojson }}')
+    
     console.log(quiz);
     let listString = document.createElement('ol')
     for (let i = 0; i < quiz.questions.length; i++) {

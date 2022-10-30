@@ -1756,7 +1756,9 @@ def endpoint_fighter():
 
 @app.route('/flashcards')
 def endpoint_flashcards():
-    if request.args.get('advanced'):
+    if sD.activeQuiz:
+        return render_template('/games/flashcards', quiz=sD.activeQuiz)
+    elif request.args.get('advanced'):
         advanced = '?advanced=true'
     else:
         advanced = ''

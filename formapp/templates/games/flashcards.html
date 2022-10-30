@@ -265,7 +265,12 @@
   var cardSubmitted = true;
   var discardPile = 0;
   var mistakePile = []
+  var quiz = JSON.parse('{{ quiz | tojson }}')
+  console.log(quiz);
 
+
+
+  
   var json_nocti_written = `{
       "generalInformationAndConcepts": [
         ["Oley Birkeland", "Which of the following errors is caused by a calculation error?", ["logical", "arithmetic", "truncation", "semantic"], "1", "2"],
@@ -422,6 +427,24 @@
       var numberOfCards = Object.keys(data_javascript).length;
       for (let i = 0; i < numberOfCards; i++) {
         dataList.push(data_javascript[i])
+      }
+      console.log(dataList);
+
+      //Pick out a certain number of cards
+      for (let i = 0; i < numberOfCards; i++) {
+        data.push(dataList.splice(Math.floor(Math.random() * dataList.length), 1)[0])
+      }
+      return data;
+    } else if (languageType == "quiz") {
+      data = [];
+      mistakePile = [];
+      discardPile = 0;
+      var cardIndex = 0;
+      dataList = [];
+      // var dataList = data_javascript;
+      var numberOfCards = Object.keys(quiz.keys).length;
+      for (let i = 0; i < numberOfCards; i++) {
+        dataList.push(quiz[i])
       }
       console.log(dataList);
 
@@ -625,6 +648,7 @@
       multchoice2.innerHTML = xyz[1];
       multchoice3.innerHTML = xyz[2];
       multchoice4.innerHTML = xyz[3];
+      console.log(xyz);
       document.getElementById("button").onclick = submitChoice;
     }
   }
